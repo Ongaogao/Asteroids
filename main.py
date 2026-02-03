@@ -1,6 +1,8 @@
 import pygame
 from constants import *
 from logger import log_state
+from player import Player
+from circleshape import CircleShape
 
 
 
@@ -10,12 +12,14 @@ def main():
     print(f"Screen width: {SCREEN_WIDTH}, Screen height: {SCREEN_HEIGHT}")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    infinite_loop(screen,clock, frame_rate=60)
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    infinite_loop(screen, clock, frame_rate=60, player = player)
+    
 
     
 
 
-def infinite_loop(screen, clock, frame_rate):
+def infinite_loop(screen, clock, frame_rate, player):
     dt = 0
     while True:
         log_state()
@@ -24,8 +28,11 @@ def infinite_loop(screen, clock, frame_rate):
                 return
 
         screen.fill("black")
+        player.draw(screen)
+        
         pygame.display.flip()
         dt = clock.tick(frame_rate) / 1000.0
+        
 
             
 

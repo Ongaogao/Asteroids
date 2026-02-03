@@ -1,4 +1,6 @@
 import pygame
+from constants import LINE_WIDTH
+
 
 # Base class for game objects
 class CircleShape(pygame.sprite.Sprite):
