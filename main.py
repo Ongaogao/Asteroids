@@ -27,6 +27,8 @@ def infinite_loop(screen, clock, frame_rate, player):
             if event.type == pygame.QUIT:
                 return
 
+
+        player.update(dt)
         screen.fill("black")
         player.draw(screen)
         
