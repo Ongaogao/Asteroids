@@ -7,6 +7,7 @@ from circleshape import CircleShape
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from logger import log_event
+from shot import Shot
 
 
 
@@ -17,21 +18,23 @@ def main():
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
     Player.containers = (updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
+    Shot.containers = (shots, updatable, drawable)
     AsteroidField.containers = (updatable,)
     asteroid_field = AsteroidField()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    infinite_loop(screen, clock, frame_rate=60, player = player, updatable=updatable, drawable=drawable,asteroids=asteroids)
+    infinite_loop(screen, clock, frame_rate=60, player = player, updatable=updatable, drawable=drawable,asteroids=asteroids, shots=shots)
 
     
 
     
 
 
-def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroids):
+def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroids, shots):
     dt = 0
     while True:
         log_state()
