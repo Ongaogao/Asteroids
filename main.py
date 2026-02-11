@@ -27,7 +27,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    infinite_loop(screen, clock, frame_rate=60, player = player, updatable=updatable, drawable=drawable,asteroids=asteroids, shots=shots)
+    infinite_loop(screen, clock, frame_rate=120, player = player, updatable=updatable, drawable=drawable,asteroids=asteroids, shots=shots)
 
     
 
@@ -52,7 +52,7 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
             for shot in shots:
                 if shot.collides_with(asteroid):
                     shot.kill()
-                    asteroid.kill()
+                    asteroid.split()
                     log_event("asteroid_shot")
                     
 
