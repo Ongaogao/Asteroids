@@ -44,18 +44,34 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
 
 
         updatable.update(dt)
+        
+        # Check player-asteroid collisions
         for asteroid in asteroids:
             if player.collides_with(asteroid):
                 log_event("player_hit")
                 print("Game Over!")
                 sys.exit()
-            for shot in shots:
+        
+        # Check asteroid-asteroid collisions
+        asteroid_list = list(asteroids)
+        for i in range(len(asteroid_list)):
+            for j in range(i + 1, len(asteroid_list)):
+                if asteroid_list[i].collides_with(asteroid_list[j]):
+                    # Resolve overlap by pushing asteroids apart
+                    asteroid_list[i]._resolve_collision(asteroid_list[i], asteroid_list[j])
+                    # Bounce both asteroids
+                    asteroid_list[i].collision()
+                    asteroid_list[j].collision()
+
+        
+        # Check shot-asteroid collisions
+        for shot in shots:
+            for asteroid in asteroids:
                 if shot.collides_with(asteroid):
                     shot.kill()
                     asteroid.split()
-                    log_event("asteroid_shot")
+                    log_event("asteroid_shot") 
                     
-
 
         screen.fill("black")
         for thing in drawable:
