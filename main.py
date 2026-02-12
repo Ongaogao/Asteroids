@@ -41,13 +41,16 @@ def main():
 def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroids, shots, powerups):
     dt = 0
     score = 0
+    scaling_factor = 2
     original_background = pygame.image.load("space.jpg")
-    Background = pygame.transform.scale(original_background, (SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2))
+    Background = pygame.transform.smoothscale(original_background, (SCREEN_WIDTH * scaling_factor, SCREEN_HEIGHT * scaling_factor))
     bg_rect = Background.get_rect()
-    background_x = SCREEN_WIDTH /2
-    background_y = SCREEN_HEIGHT /2
+    background_x = SCREEN_WIDTH /2 * scaling_factor
+    background_y = SCREEN_HEIGHT /2 * scaling_factor
     bg_rect.center = (background_x, background_y)
     font = pygame.font.Font(None, 36)
+    xi= player.position.x
+    yi= player.position.y
 
     # Open the file to read the existing value
     try:
@@ -63,6 +66,16 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
             if event.type == pygame.QUIT:
                 return
 
+        dx= player.position.x - xi
+        dy= player.position.y - yi 
+        screen.blit(Background, (bg_rect.x, bg_rect.y))
+        background_x = SCREEN_WIDTH /2 + dx * 0.5 -1440 * scaling_factor
+        background_y = SCREEN_HEIGHT /2 + dy * 0.5 -720 * scaling_factor
+        bg_rect.x = background_x
+        bg_rect.y = background_y
+        
+        for thing in drawable:
+            thing.draw(screen)
 
         updatable.update(dt)
         
@@ -114,14 +127,6 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
                 powerup.kill()
                 powerup.apply(player)
                 score += 1000
-                
-          
-        screen.blit(Background, (bg_rect.x, bg_rect.y))
-        background_x = SCREEN_WIDTH / 2 - player.position.x * 0.5
-        background_y = SCREEN_HEIGHT / 2 - player.position.y * 0.5
-        bg_rect.center = (background_x, background_y)
-        for thing in drawable:
-            thing.draw(screen)
 
         # Draw score and high score in top-left corner with small margin
         score_text = font.render(f"Score: {score}", True, "white")
