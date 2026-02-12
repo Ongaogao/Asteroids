@@ -68,5 +68,5 @@ class Player(CircleShape):
         self.power += 1
     
     def activate_power_cooldown(self):
-        self.power_cooldown_timer = 30
+        self.power_cooldown_timer = 3
         

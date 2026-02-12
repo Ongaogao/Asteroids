@@ -9,7 +9,7 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from logger import log_event
 from shot import Shot
-from powerup import PowerUp, Super, Power
+from powerup import PowerUp, Special, Power
 
 
 
@@ -40,6 +40,15 @@ def main():
 
 def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroids, shots, powerups):
     dt = 0
+    score = 0
+    # Open the file to read the existing value
+    try:
+        with open("highscore.txt", "r") as f:
+            content = f.read()
+            high_score = int(content) if content else 0
+    except FileNotFoundError:
+        high_score = 0
+
     while True:
         log_state()
         for event in pygame.event.get():
@@ -54,6 +63,9 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
             if player.collides_with(asteroid):
                 log_event("player_hit")
                 print("Game Over!")
+                if score >= high_score:
+                    with open("highscore.txt", "w") as f:
+                        f.write(str(score))
                 sys.exit()
         
         # Check asteroid-asteroid collisions
@@ -72,15 +84,16 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
         for shot in shots:
             for asteroid in asteroids:
                 if shot.collides_with(asteroid):
+                    score += asteroid.radius * 10
                     shot.kill()
                     asteroid.split()
                     log_event("asteroid_shot")
-                    power_up = random.uniform(1,30)
-                    if power_up >= 29:
+                    power_up = random.uniform(1,50)
+                    if power_up >= 49:
                         log_event("powerup_spawned")
                         print("Power-up spawned!")
-                        # Randomly choose between Super and Power powerups
-                        powerup_type = random.choice([Super, Power])
+                        # Randomly choose between Special and Power powerups
+                        powerup_type = random.choice([Special, Power])
                         new_powerup = powerup_type(asteroid.position.x, asteroid.position.y)
 
         
@@ -88,11 +101,11 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
         for powerup in powerups:
             if player.collides_with(powerup):
                 log_event("powerup_collected")
-                print("Power-up collected!")
                 powerup_type = type(powerup).__name__
                 print(f"Collected {powerup_type} powerup!")
                 powerup.kill()
                 powerup.apply(player)
+                score += 1000
                 
 
                     
@@ -100,6 +113,14 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
         screen.fill("black")
         for thing in drawable:
             thing.draw(screen)
+
+        # Draw score and high score in top-left corner with small margin
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {score}", True, "white")
+        high_score_text = font.render(f"High Score: {high_score}", True, "white")
+        margin = 10
+        screen.blit(score_text, (margin, margin))
+        screen.blit(high_score_text, (margin, margin + 40))
 
         pygame.display.flip()
         dt = clock.tick(frame_rate) / 1000.0

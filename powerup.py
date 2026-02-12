@@ -16,7 +16,7 @@ class PowerUp(CircleShape):
         pass
 
 
-class Super(PowerUp):
+class Special(PowerUp):
     """Spawns one additional bullet per shot"""
     def __init__(self, x, y):
         super().__init__(x, y)
