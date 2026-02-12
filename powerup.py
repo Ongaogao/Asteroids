@@ -41,9 +41,7 @@ class Power(PowerUp):
         
     def draw(self, screen):
         pygame.draw.circle(screen, "yellow", self.position, self.radius, 2)
-        # Draw blue P
-        pygame.draw.circle(screen, "blue", self.position, self.radius - 5, 2)
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font(None, 72)
         text = font.render("P", True, "blue")
         text_rect = text.get_rect(center=self.position)
         screen.blit(text, text_rect)

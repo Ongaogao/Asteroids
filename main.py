@@ -75,8 +75,8 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
                     shot.kill()
                     asteroid.split()
                     log_event("asteroid_shot")
-                    power_up = random.uniform(1,20)
-                    if power_up >= 19:
+                    power_up = random.uniform(1,30)
+                    if power_up >= 29:
                         log_event("powerup_spawned")
                         print("Power-up spawned!")
                         # Randomly choose between Super and Power powerups
