@@ -41,6 +41,14 @@ def main():
 def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroids, shots, powerups):
     dt = 0
     score = 0
+    original_background = pygame.image.load("space.jpg")
+    Background = pygame.transform.scale(original_background, (SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2))
+    bg_rect = Background.get_rect()
+    background_x = SCREEN_WIDTH /2
+    background_y = SCREEN_HEIGHT /2
+    bg_rect.center = (background_x, background_y)
+    font = pygame.font.Font(None, 36)
+
     # Open the file to read the existing value
     try:
         with open("highscore.txt", "r") as f:
@@ -107,15 +115,15 @@ def infinite_loop(screen, clock, frame_rate, player, updatable, drawable,asteroi
                 powerup.apply(player)
                 score += 1000
                 
-
-                    
-
-        screen.fill("black")
+          
+        screen.blit(Background, (bg_rect.x, bg_rect.y))
+        background_x = SCREEN_WIDTH / 2 - player.position.x * 0.5
+        background_y = SCREEN_HEIGHT / 2 - player.position.y * 0.5
+        bg_rect.center = (background_x, background_y)
         for thing in drawable:
             thing.draw(screen)
 
         # Draw score and high score in top-left corner with small margin
-        font = pygame.font.Font(None, 36)
         score_text = font.render(f"Score: {score}", True, "white")
         high_score_text = font.render(f"High Score: {high_score}", True, "white")
         margin = 10
