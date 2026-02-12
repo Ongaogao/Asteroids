@@ -1,6 +1,6 @@
 import pygame
 import random
-from constants import PLAYER_RADIUS, LINE_WIDTH, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, SHOT_RADIUS, PLAYER_SHOOT_COOLDOWN_SECONDS
+from constants import *
 from circleshape import CircleShape
 from shot import Shot
 
@@ -46,6 +46,8 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+        
+        super().update(dt)
     
     def move(self, dt):
         keys = pygame.key.get_pressed()
